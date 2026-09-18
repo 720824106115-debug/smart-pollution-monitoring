@@ -1,0 +1,689 @@
+/* ==========================================================================
+   SMART POLLUTION MONITORING - DASHBOARD & MAP STYLING (LIGHT THEME ONLY)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. DASHBOARD CONTROL BAR & STATION SELECTOR
+   -------------------------------------------------------------------------- */
+.dashboard-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  background-color: #FFFFFF;
+  padding: 1.25rem 1.75rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.station-select-group {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.station-select-group label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-navy);
+  white-space: nowrap;
+}
+
+.station-dropdown {
+  min-width: 220px;
+  padding: 0.6rem 1rem;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-navy);
+  cursor: pointer;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.station-dropdown:focus {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.dashboard-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.live-poll-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  padding: 0.4rem 0.8rem;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+}
+
+/* --------------------------------------------------------------------------
+   2. DASHBOARD MAIN GRID
+   -------------------------------------------------------------------------- */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.chart-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.chart-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-navy);
+}
+
+.chart-card-subtitle {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  margin-top: 0.15rem;
+}
+
+.chart-pills {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.chart-pill-btn {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.775rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+  background: #FFFFFF;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.chart-pill-btn:hover {
+  background: var(--bg-secondary);
+  color: var(--text-navy);
+}
+
+.chart-pill-btn.active {
+  background: var(--primary-blue);
+  color: #FFFFFF;
+  border-color: var(--primary-blue);
+}
+
+.chart-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 280px;
+}
+
+/* --------------------------------------------------------------------------
+   3. AQI RADIAL GAUGE & BREAKDOWN CARD
+   -------------------------------------------------------------------------- */
+.gauge-overview-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.gauge-center-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 1rem 0;
+}
+
+.gauge-svg {
+  width: 220px;
+  height: 120px;
+  overflow: visible;
+}
+
+.gauge-bg-track {
+  fill: none;
+  stroke: var(--border-light);
+  stroke-width: 18;
+  stroke-linecap: round;
+}
+
+.gauge-fill-arc {
+  fill: none;
+  stroke: var(--aqi-moderate);
+  stroke-width: 18;
+  stroke-linecap: round;
+  stroke-dasharray: 283;
+  stroke-dashoffset: 140;
+  transition: stroke-dashoffset 1s ease-out, stroke 0.4s ease;
+}
+
+.gauge-readout {
+  position: absolute;
+  top: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gauge-readout-num {
+  font-size: 2.5rem;
+  font-weight: 800;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--text-navy);
+  line-height: 1;
+}
+
+.gauge-readout-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--aqi-moderate);
+  text-transform: uppercase;
+  margin-top: 0.25rem;
+}
+
+.gauge-scale-legend {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 220px;
+  font-size: 0.725rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-top: -0.5rem;
+}
+
+/* Pollutant Bars List */
+.pollutant-bars-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.pollutant-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.pollutant-bar-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8125rem;
+}
+
+.pollutant-name {
+  font-weight: 600;
+  color: var(--text-navy);
+}
+
+.pollutant-val {
+  font-weight: 700;
+  color: var(--text-body);
+}
+
+.pollutant-track {
+  height: 8px;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  position: relative;
+}
+
+.pollutant-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.8s ease, background-color 0.4s ease;
+}
+
+.pollutant-fill.good { background-color: var(--secondary-green); }
+.pollutant-fill.moderate { background-color: var(--aqi-moderate); }
+.pollutant-fill.high { background-color: var(--aqi-unhealthy-sensitive); }
+.pollutant-fill.critical { background-color: var(--aqi-unhealthy); }
+
+/* --------------------------------------------------------------------------
+   4. INTERACTIVE POLLUTION MAP (LIGHT THEME)
+   -------------------------------------------------------------------------- */
+.map-card-wrapper {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  position: relative;
+}
+
+.map-toolbar {
+  padding: 1.25rem 1.75rem;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.map-layer-toggles {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.map-layer-btn {
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  background-color: #FFFFFF;
+  color: var(--text-navy);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.map-layer-btn:hover {
+  background-color: var(--bg-secondary);
+}
+
+.map-layer-btn.active {
+  background-color: var(--primary-blue);
+  color: #FFFFFF;
+  border-color: var(--primary-blue);
+}
+
+.map-container {
+  height: 480px;
+  width: 100%;
+  background-color: #F8FAFC;
+  position: relative;
+  z-index: 1;
+}
+
+/* Custom Light Marker Styling for Leaflet */
+.custom-station-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  font-weight: 800;
+  font-size: 0.8125rem;
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+  border: 3px solid var(--primary-blue);
+}
+
+.custom-station-marker:hover {
+  transform: scale(1.15);
+  z-index: 1000 !important;
+}
+
+.custom-station-marker.good {
+  border-color: var(--secondary-green);
+  color: var(--secondary-green);
+}
+
+.custom-station-marker.moderate {
+  border-color: var(--aqi-moderate);
+  color: #B45309;
+}
+
+.custom-station-marker.high {
+  border-color: var(--aqi-unhealthy-sensitive);
+  color: #C2410C;
+}
+
+.custom-station-marker.critical {
+  border-color: var(--aqi-unhealthy);
+  color: #B91C1C;
+}
+
+/* Leaflet Custom Light Popup */
+.leaflet-popup-content-wrapper {
+  background-color: #FFFFFF !important;
+  color: var(--text-body) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid var(--border-light) !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  line-height: 1.5 !important;
+}
+
+.leaflet-popup-tip {
+  background-color: #FFFFFF !important;
+  border: 1px solid var(--border-light) !important;
+}
+
+.map-popup-inner {
+  padding: 1.25rem;
+}
+
+.map-popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.map-popup-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-navy);
+}
+
+.map-popup-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.map-popup-stat {
+  background-color: var(--bg-secondary);
+  padding: 0.5rem 0.65rem;
+  border-radius: var(--radius-sm);
+}
+
+.map-popup-stat-label {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.map-popup-stat-val {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-navy);
+}
+
+/* Map Legend Overlay */
+.map-legend-box {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1.15rem;
+  box-shadow: var(--shadow-md);
+  z-index: 500;
+  pointer-events: auto;
+}
+
+.map-legend-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-navy);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.map-legend-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.map-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--text-body);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.legend-dot.good { background-color: var(--secondary-green); }
+.legend-dot.moderate { background-color: var(--aqi-moderate); }
+.legend-dot.unhealthy { background-color: var(--aqi-unhealthy-sensitive); }
+.legend-dot.hazardous { background-color: var(--aqi-unhealthy); }
+
+/* --------------------------------------------------------------------------
+   5. ANALYTICS & ANOMALY DETECTION
+   -------------------------------------------------------------------------- */
+.analytics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.anomaly-log-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.anomaly-table-wrapper {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.data-table th {
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 0.775rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.data-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-navy-light);
+}
+
+.data-table tr:hover td {
+  background-color: var(--bg-hover);
+}
+
+/* --------------------------------------------------------------------------
+   6. AI ARCHITECTURE PIPELINE CARDS
+   -------------------------------------------------------------------------- */
+.pipeline-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.pipeline-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  transition: all var(--transition-normal);
+}
+
+.pipeline-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(37, 99, 235, 0.3);
+}
+
+.pipeline-step-badge {
+  position: absolute;
+  top: -12px;
+  left: 1.5rem;
+  background: var(--primary-blue);
+  color: #FFFFFF;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+.pipeline-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-subtle-blue);
+  color: var(--primary-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  margin: 0.75rem 0 1rem 0;
+}
+
+.pipeline-card h4 {
+  font-size: 1.05rem;
+  color: var(--text-navy);
+  margin-bottom: 0.5rem;
+}
+
+.pipeline-card p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   7. RESPONSIVE DESIGN (LIGHT THEME MAINTAINED ON ALL VIEWPORTS)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1100px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  .prediction-container {
+    grid-template-columns: 1fr;
+  }
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+  .pipeline-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --navbar-height: 64px;
+  }
+  .section {
+    padding: 3.5rem 0;
+  }
+  .hero-title {
+    font-size: 2.25rem;
+  }
+  .hero-stats-row {
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+  .navbar-nav {
+    display: none;
+    position: absolute;
+    top: var(--navbar-height);
+    left: 0;
+    right: 0;
+    background-color: #FFFFFF;
+    flex-direction: column;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+    box-shadow: var(--shadow-lg);
+    gap: 0.75rem;
+  }
+  .navbar-nav.open {
+    display: flex;
+  }
+  .nav-link.active::after {
+    display: none;
+  }
+  .mobile-menu-toggle {
+    display: flex;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .pipeline-grid {
+    grid-template-columns: 1fr;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+  .dashboard-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .station-dropdown {
+    width: 100%;
+  }
+  .map-container {
+    height: 360px;
+  }
+}

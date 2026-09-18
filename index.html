@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Pollution Monitoring using AI and ML | SmartPollution AI</title>
+  <meta name="description" content="Next-generation AI & ML powered Smart Pollution Monitoring Platform for real-time air quality tracking, predictive atmospheric forecasting, and smart city environmental intelligence.">
+
+  <!-- Favicon / Web Icon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍃</text></svg>">
+
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 CDN (Icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Leaflet Map CSS (Strict Light Theme) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- Application Styles (Strict Light Theme) -->
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       1. NAVBAR (STRICT LIGHT THEME)
+       ======================================================================== -->
+  <header class="navbar" id="navbar">
+    <div class="container navbar-container">
+      <a href="#home" class="navbar-logo" id="nav-logo">
+        <div class="navbar-logo-icon">
+          <i class="fas fa-leaf"></i>
+        </div>
+        <div>SmartPollution <span>AI</span></div>
+      </a>
+
+      <nav>
+        <ul class="navbar-nav">
+          <li><a href="#home" class="nav-link active" id="nav-home">Home</a></li>
+          <li><a href="#live-monitoring" class="nav-link" id="nav-live">Live Monitoring</a></li>
+          <li><a href="#ai-prediction" class="nav-link" id="nav-prediction">AI Prediction</a></li>
+          <li><a href="#pollution-map" class="nav-link" id="nav-map">Pollution Map</a></li>
+          <li><a href="#analytics" class="nav-link" id="nav-analytics">Analytics</a></li>
+          <li><a href="#alerts" class="nav-link" id="nav-alerts">Alerts</a></li>
+          <li><a href="#about" class="nav-link" id="nav-about">About</a></li>
+        </ul>
+      </nav>
+
+      <div class="navbar-actions">
+        <div class="sensor-status-badge" id="navbar-sensor-badge">
+          <span class="live-pulse"></span>
+          <span>24 Nodes Active</span>
+        </div>
+        <button class="btn btn-outline btn-sm" id="btn-open-report-modal">
+          <i class="fas fa-file-alt"></i> Report
+        </button>
+        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       2. HERO SECTION (STRICT LIGHT THEME)
+       ======================================================================== -->
+  <section class="hero-section" id="home">
+    <div class="hero-backdrop-glow"></div>
+    <div class="hero-backdrop-glow-2"></div>
+
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fas fa-microchip"></i> Next-Gen Environmental Intelligence
+        </div>
+        <h1 class="hero-title">
+          Smart Pollution <br>
+          <span class="text-gradient">Monitoring with AI & ML</span>
+        </h1>
+        <p class="hero-subtitle">
+          Real-time hyper-local air quality tracking, deep learning atmospheric dispersion modeling, and automated municipal early warnings designed for sustainable smart cities.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="#live-monitoring" class="btn btn-primary btn-lg" id="hero-btn-live">
+            <i class="fas fa-chart-line"></i> Explore Live Dashboard
+          </a>
+          <a href="#ai-prediction" class="btn btn-secondary btn-lg" id="hero-btn-predict">
+            <i class="fas fa-brain"></i> Try AI Predictor
+          </a>
+        </div>
+
+        <div class="hero-stats-row">
+          <div class="hero-stat-item">
+            <span class="hero-stat-num">94.2%</span>
+            <span class="hero-stat-label">Model Accuracy (R²)</span>
+          </div>
+          <div class="hero-stat-item">
+            <span class="hero-stat-num">&lt; 120ms</span>
+            <span class="hero-stat-label">Real-time Inference</span>
+          </div>
+          <div class="hero-stat-item">
+            <span class="hero-stat-num">24 / 7</span>
+            <span class="hero-stat-label">IoT Sensor Polling</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Dashboard Preview Card -->
+      <div class="hero-preview-card" id="hero-preview-card">
+        <div class="hero-preview-header">
+          <div class="hero-preview-station">
+            <div class="hero-preview-icon">
+              <i class="fas fa-tower-broadcast"></i>
+            </div>
+            <div>
+              <h4 id="hero-preview-station-name">City Center (HQ)</h4>
+              <p>Primary Telemetry Node #01</p>
+            </div>
+          </div>
+          <span class="badge badge-good">
+            <span class="live-pulse"></span> Streaming Live
+          </span>
+        </div>
+
+        <div class="hero-aqi-display">
+          <div class="hero-aqi-score" id="hero-aqi-score-box">
+            <span class="num" id="hero-aqi-num">78</span>
+            <span class="label">AQI</span>
+          </div>
+          <div class="hero-aqi-meta">
+            <h5 id="hero-aqi-status" style="color: var(--aqi-moderate);">Moderate Air Quality</h5>
+            <p id="hero-aqi-desc">Air quality is acceptable; minor health symptoms may occur for sensitive individuals.</p>
+          </div>
+        </div>
+
+        <div class="hero-mini-metrics">
+          <div class="hero-mini-pill">
+            <div class="metric-name">PM2.5</div>
+            <div class="metric-val" id="hero-pm25-val">32 µg</div>
+          </div>
+          <div class="hero-mini-pill">
+            <div class="metric-name">PM10</div>
+            <div class="metric-val" id="hero-pm10-val">54 µg</div>
+          </div>
+          <div class="hero-mini-pill">
+            <div class="metric-name">CO₂</div>
+            <div class="metric-val" id="hero-co2-val">412 ppm</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       3. KEY STAT CARDS (STRICT LIGHT THEME)
+       ======================================================================== -->
+  <section class="section section-secondary" id="stats-section" style="padding-top: 3.5rem; padding-bottom: 3.5rem;">
+    <div class="container">
+      <div class="stats-grid">
+        <!-- AQI Card -->
+        <div class="stat-card" id="card-aqi">
+          <div class="stat-card-header">
+            <span class="stat-card-title">Air Quality Index</span>
+            <div class="stat-icon yellow"><i class="fas fa-wind"></i></div>
+          </div>
+          <div class="stat-card-body">
+            <span class="stat-card-value" id="stat-aqi-val">78</span>
+            <span class="stat-card-unit">AQI</span>
+          </div>
+          <div class="stat-card-footer">
+            <span class="badge badge-moderate" id="stat-aqi-badge">Moderate</span>
+            <span class="stat-trend down-good"><i class="fas fa-arrow-down"></i> -4 vs 1hr ago</span>
+          </div>
+        </div>
+
+        <!-- PM2.5 Card -->
+        <div class="stat-card" id="card-pm25">
+          <div class="stat-card-header">
+            <span class="stat-card-title">PM2.5 Particulate</span>
+            <div class="stat-icon blue"><i class="fas fa-smog"></i></div>
+          </div>
+          <div class="stat-card-body">
+            <span class="stat-card-value" id="stat-pm25-val">32</span>
+            <span class="stat-card-unit">µg/m³</span>
+          </div>
+          <div class="stat-card-footer">
+            <span style="color: var(--text-secondary); font-size: 0.775rem;">WHO Limit: 15 µg/m³</span>
+            <span class="stat-trend up-bad"><i class="fas fa-arrow-up"></i> +1.2%</span>
+          </div>
+        </div>
+
+        <!-- PM10 Card -->
+        <div class="stat-card" id="card-pm10">
+          <div class="stat-card-header">
+            <span class="stat-card-title">PM10 Coarse</span>
+            <div class="stat-icon green"><i class="fas fa-dust"></i></div>
+          </div>
+          <div class="stat-card-body">
+            <span class="stat-card-value" id="stat-pm10-val">54</span>
+            <span class="stat-card-unit">µg/m³</span>
+          </div>
+          <div class="stat-card-footer">
+            <span style="color: var(--text-secondary); font-size: 0.775rem;">WHO Limit: 45 µg/m³</span>
+            <span class="stat-trend down-good"><i class="fas fa-arrow-down"></i> -0.8%</span>
+          </div>
+        </div>
+
+        <!-- CO2 Card -->
+        <div class="stat-card" id="card-co2">
+          <div class="stat-card-header">
+            <span class="stat-card-title">Carbon Dioxide</span>
+            <div class="stat-icon purple"><i class="fas fa-cloud"></i></div>
+          </div>
+          <div class="stat-card-body">
+            <span class="stat-card-value" id="stat-co2-val">412</span>
+            <span class="stat-card-unit">ppm</span>
+          </div>
+          <div class="stat-card-footer">
+            <span class="badge badge-good">Safe Range</span>
+            <span class="stat-trend neutral"><i class="fas fa-minus"></i> Steady</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secondary Quick Stats Grid -->
+      <div class="stats-grid" style="margin-bottom: 0;">
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span class="stat-card-title">Nitrogen Dioxide (NO₂)</span>
+            <div class="stat-icon blue"><i class="fas fa-atom"></i></div>
+          </div>
+          <div class="stat-card-body">
+            <span class="stat-card-value" id="stat-no2-val">18</span>
+            <span class="stat-card-unit">ppb</span>
+          </div>
+          <div class="stat-card-footer">
+            <span class="badge badge-good">Optimal</span>
+            <span style="font-size: 0.775rem; color: var(--text-muted);">Traffic emissions index</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span class="stat-card-title">Ground Ozone (O₃)</span>
+            <div class="stat-icon yellow"><i class="fas fa-sun"></i></div>
+          </div>
+          <div class="stat-card-body">
+            <span class="stat-card-value" id="stat-o3-val">45</span>
+            <span class="stat-card-unit">ppb</span>
+          </div>
+          <div class="stat-card-footer">
+            <span class="badge badge-moderate">Moderate</span>
+            <span style="font-size: 0.775rem; color: var(--text-muted);">Photochemical index</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span class="stat-card-title">Ambient Temp / Humidity</span>
+            <div class="stat-icon green"><i class="fas fa-temperature-half"></i></div>
+          </div>
+          <div class="stat-card-body">
+            <span class="stat-card-value" id="stat-temp-val" style="font-size: 1.55rem;">26.4°C / 58%</span>
+          </div>
+          <div class="stat-card-footer">
+            <span class="badge badge-blue">Normal Microclimate</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <span class="stat-card-title">Wind Dispersion</span>
+            <div class="stat-icon blue"><i class="fas fa-compass"></i></div>
+          </div>
+          <div class="stat-card-body">
+            <span class="stat-card-value" id="stat-wind-val" style="font-size: 1.55rem;">14 km/h NE</span>
+          </div>
+          <div class="stat-card-footer">
+            <span class="badge badge-good">Moderate Ventilation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       4. LIVE MONITORING DASHBOARD (STRICT LIGHT THEME)
+       ======================================================================== -->
+  <section class="section section-dashboard" id="live-monitoring">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge"><i class="fas fa-satellite-dish"></i> Real-time Telemetry Feed</div>
+        <h2 class="section-title">Live Sensor Monitoring Dashboard</h2>
+        <p class="section-subtitle">Real-time data synchronization directly from calibrated smart IoT air quality sensing nodes across the metropolitan zone.</p>
+      </div>
+
+      <!-- Dashboard Toolbar & Station Selector -->
+      <div class="dashboard-toolbar">
+        <div class="station-select-group">
+          <label for="dashboard-station-select"><i class="fas fa-map-marker-alt" style="color: var(--primary-blue);"></i> Active Sensor Station:</label>
+          <select id="dashboard-station-select" class="station-dropdown"></select>
+        </div>
+
+        <div class="dashboard-actions">
+          <div class="live-poll-indicator">
+            <span class="live-pulse"></span> Polling every 3s
+          </div>
+          <button class="btn btn-outline btn-sm" id="btn-toggle-live">
+            <i class="fas fa-pause"></i> Pause Stream
+          </button>
+          <button class="btn btn-secondary btn-sm" id="btn-simulate-spike">
+            <i class="fas fa-bolt"></i> Simulate Spike
+          </button>
+        </div>
+      </div>
+
+      <!-- Dashboard Grid: Live Line Chart + Radial Gauge Card -->
+      <div class="dashboard-grid">
+        <!-- Live Telemetry Chart -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div>
+              <h3 class="chart-card-title">Live Telemetry Trend</h3>
+              <p class="chart-card-subtitle">Real-time rolling trajectory for AQI and PM2.5</p>
+            </div>
+            <div class="chart-pills">
+              <span class="badge badge-blue"><i class="fas fa-circle" style="font-size: 0.5rem;"></i> Active Node Feed</span>
+            </div>
+          </div>
+          <div class="chart-canvas-wrapper">
+            <canvas id="liveTelemetryChart"></canvas>
+          </div>
+          <div style="margin-top: 1rem; padding-top: 0.85rem; border-top: 1px solid var(--border-subtle); display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-secondary);">
+            <span><i class="fas fa-shield-alt" style="color: var(--secondary-green);"></i> Sensor Calibration: Validated</span>
+            <span>Hardware: <strong id="dash-sensor-model" style="color: var(--text-navy);">AeroSense Pro V3</strong></span>
+            <span>Battery: <strong id="dash-sensor-battery" style="color: var(--text-navy);">100%</strong></span>
+            <span>Uptime: <strong id="dash-sensor-uptime" style="color: var(--text-navy);">99.9%</strong></span>
+          </div>
+        </div>
+
+        <!-- AQI Radial Gauge & Pollutants Breakdown Card -->
+        <div class="gauge-overview-card">
+          <div class="chart-card-header" style="margin-bottom: 0.5rem;">
+            <div>
+              <h3 class="chart-card-title">Current AQI Rating</h3>
+              <p class="chart-card-subtitle">Calculated EPA / WHO Standard</p>
+            </div>
+            <span class="badge badge-moderate" id="gauge-aqi-badge">Index 0-300</span>
+          </div>
+
+          <!-- SVG Radial Gauge -->
+          <div class="gauge-center-wrapper">
+            <svg class="gauge-svg" viewBox="0 0 200 110">
+              <path class="gauge-bg-track" d="M 20 100 A 80 80 0 0 1 180 100"></path>
+              <path class="gauge-fill-arc" id="gauge-arc-fill" d="M 20 100 A 80 80 0 0 1 180 100"></path>
+            </svg>
+            <div class="gauge-readout">
+              <span class="gauge-readout-num" id="gauge-aqi-num">78</span>
+              <span class="gauge-readout-label" id="gauge-aqi-label">Moderate</span>
+            </div>
+            <div class="gauge-scale-legend">
+              <span>0 (Good)</span>
+              <span>150 (Unhealthy)</span>
+              <span>300+</span>
+            </div>
+          </div>
+
+          <!-- Pollutant Breakdown Bars -->
+          <div class="pollutant-bars-list">
+            <div class="pollutant-bar-item" id="bar-pm25">
+              <div class="pollutant-bar-header">
+                <span class="pollutant-name">PM2.5 (Fine Particulates)</span>
+                <span class="pollutant-val">32 µg/m³</span>
+              </div>
+              <div class="pollutant-track">
+                <div class="pollutant-fill moderate" style="width: 45%;"></div>
+              </div>
+            </div>
+
+            <div class="pollutant-bar-item" id="bar-pm10">
+              <div class="pollutant-bar-header">
+                <span class="pollutant-name">PM10 (Coarse Particulates)</span>
+                <span class="pollutant-val">54 µg/m³</span>
+              </div>
+              <div class="pollutant-track">
+                <div class="pollutant-fill moderate" style="width: 36%;"></div>
+              </div>
+            </div>
+
+            <div class="pollutant-bar-item" id="bar-co2">
+              <div class="pollutant-bar-header">
+                <span class="pollutant-name">CO₂ (Carbon Dioxide)</span>
+                <span class="pollutant-val">412 ppm</span>
+              </div>
+              <div class="pollutant-track">
+                <div class="pollutant-fill good" style="width: 25%;"></div>
+              </div>
+            </div>
+
+            <div class="pollutant-bar-item" id="bar-no2">
+              <div class="pollutant-bar-header">
+                <span class="pollutant-name">NO₂ (Nitrogen Dioxide)</span>
+                <span class="pollutant-val">18 ppb</span>
+              </div>
+              <div class="pollutant-track">
+                <div class="pollutant-fill good" style="width: 36%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       5. AI PREDICTION & SCENARIO SIMULATOR (STRICT LIGHT THEME)
+       ======================================================================== -->
+  <section class="section" id="ai-prediction">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge purple"><i class="fas fa-brain"></i> Neural Network Forecasting</div>
+        <h2 class="section-title">AI Pollution Prediction & Scenario Simulator</h2>
+        <p class="section-subtitle">Dual-stage Bidirectional LSTM and XGBoost ensemble model trained on 4.8M atmospheric telemetry records.</p>
+      </div>
+
+      <div class="prediction-container">
+        <!-- Input Form Card -->
+        <div class="prediction-form-card">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-light);">
+            <h3 style="font-size: 1.2rem; color: var(--text-navy);"><i class="fas fa-sliders" style="color: var(--primary-blue);"></i> Forecasting Parameters</h3>
+            <span class="badge badge-purple"><i class="fas fa-code-branch"></i> Ensemble v4.2</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="pred-station-select">
+              <span>Target Monitoring Node</span>
+              <span class="form-label-desc">Select city region</span>
+            </label>
+            <select id="pred-station-select" class="form-select"></select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              <span>Forecast Horizon</span>
+              <span class="form-label-desc">Time step projection</span>
+            </label>
+            <div class="horizon-pills">
+              <button class="horizon-btn" data-horizon="1h">+1 Hour</button>
+              <button class="horizon-btn" data-horizon="6h">+6 Hours</button>
+              <button class="horizon-btn active" data-horizon="24h">+24 Hours</button>
+              <button class="horizon-btn" data-horizon="48h">+48 Hours</button>
+              <button class="horizon-btn" data-horizon="7d">+7 Days</button>
+            </div>
+          </div>
+
+          <!-- Parameter Sliders -->
+          <div class="form-group">
+            <div class="range-slider-container">
+              <div class="range-slider-header">
+                <span>Ambient Temperature</span>
+                <span class="range-slider-val" id="val-temp">26°C</span>
+              </div>
+              <input type="range" id="slider-temp" min="10" max="45" value="26">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="range-slider-container">
+              <div class="range-slider-header">
+                <span>Relative Humidity</span>
+                <span class="range-slider-val" id="val-humidity">58%</span>
+              </div>
+              <input type="range" id="slider-humidity" min="20" max="95" value="58">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="range-slider-container">
+              <div class="range-slider-header">
+                <span>Wind Dispersion Speed</span>
+                <span class="range-slider-val" id="val-wind">14 km/h</span>
+              </div>
+              <input type="range" id="slider-wind" min="1" max="40" value="14">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="range-slider-container">
+              <div class="range-slider-header">
+                <span>Urban Traffic Density Index</span>
+                <span class="range-slider-val" id="val-traffic">70/100</span>
+              </div>
+              <input type="range" id="slider-traffic" min="10" max="100" value="70">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="range-slider-container">
+              <div class="range-slider-header">
+                <span>Industrial Production Index</span>
+                <span class="range-slider-val" id="val-industrial">50/100</span>
+              </div>
+              <input type="range" id="slider-industrial" min="10" max="100" value="50">
+            </div>
+          </div>
+
+          <!-- What-If Policy Scenarios -->
+          <div style="background-color: var(--bg-secondary); border-radius: var(--radius-lg); padding: 1.25rem; border: 1px solid var(--border-light); margin-top: 1.5rem;">
+            <h4 style="font-size: 0.95rem; color: var(--text-navy); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fas fa-seedling" style="color: var(--secondary-green);"></i> Test What-If Smart City Interventions:
+            </h4>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem;">
+              <label style="display: flex; align-items: center; gap: 0.65rem; cursor: pointer; color: var(--text-navy-light);">
+                <input type="checkbox" class="policy-check" value="traffic_reduction">
+                <span>Enforce 30% Traffic Reduction / Zero-Emission Zone</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.65rem; cursor: pointer; color: var(--text-navy-light);">
+                <input type="checkbox" class="policy-check" value="industrial_cap">
+                <span>Apply 40% Industrial Stack Curtailment</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.65rem; cursor: pointer; color: var(--text-navy-light);">
+                <input type="checkbox" class="policy-check" value="rain_washout">
+                <span>Simulate Cloud Seeding / Heavy Precipitation Washout</span>
+              </label>
+            </div>
+          </div>
+
+          <button class="btn btn-primary w-100 btn-lg" id="btn-run-prediction" style="margin-top: 1.5rem;">
+            <i class="fas fa-microchip"></i> Run AI Forecast Model
+          </button>
+        </div>
+
+        <!-- Prediction Result Output Card -->
+        <div class="prediction-result-card">
+          <div>
+            <div class="pred-header">
+              <div>
+                <h3 style="font-size: 1.2rem; color: var(--text-navy);">Forecast Output</h3>
+                <p style="font-size: 0.8rem; color: var(--text-secondary);">Neural Network Inference Result</p>
+              </div>
+              <span class="pred-badge">
+                <i class="fas fa-check-double"></i> Model Confirmed
+              </span>
+            </div>
+
+            <!-- Main Score -->
+            <div class="pred-main-score">
+              <div class="pred-score-title">Predicted AQI</div>
+              <div class="pred-score-val" id="pred-aqi-num">86</div>
+              <span class="pred-level-tag badge badge-moderate" id="pred-level-badge">Moderate</span>
+              <div style="margin-top: 0.5rem;">
+                <span id="pred-delta-badge" class="badge badge-good" style="display: none;">-18 AQI via Policy</span>
+              </div>
+            </div>
+
+            <!-- Predicted Metrics Breakdown -->
+            <div class="pred-metrics-breakdown">
+              <div class="pred-metric-box">
+                <div class="label">Predicted PM2.5</div>
+                <div class="val" id="pred-pm25-val">36.1 µg/m³</div>
+              </div>
+              <div class="pred-metric-box">
+                <div class="label">Predicted PM10</div>
+                <div class="val" id="pred-pm10-val">62 µg/m³</div>
+              </div>
+            </div>
+
+            <!-- Confidence Level -->
+            <div class="confidence-bar-container">
+              <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; font-weight: 600; color: var(--text-navy);">
+                <span>Ensemble Model Confidence:</span>
+                <span id="pred-confidence-num" style="color: var(--primary-blue);">91.2%</span>
+              </div>
+              <div class="confidence-bar-track">
+                <div class="confidence-bar-fill" id="pred-confidence-bar" style="width: 91.2%;"></div>
+              </div>
+            </div>
+
+            <!-- Forecast Trajectory Chart -->
+            <div style="margin-top: 1.5rem;">
+              <h4 style="font-size: 0.875rem; color: var(--text-navy); margin-bottom: 0.5rem;">Projected Trajectory:</h4>
+              <div style="height: 140px; position: relative;">
+                <canvas id="forecastTrajectoryChart"></canvas>
+              </div>
+            </div>
+
+            <!-- Feature Importance (SHAP Weights) -->
+            <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-light);">
+              <h4 style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 0.75rem; letter-spacing: 0.03em;">
+                Key Influencing Features (SHAP Importance):
+              </h4>
+              <div class="feature-importance-list" id="shap-feature-list"></div>
+            </div>
+          </div>
+
+          <!-- Recommendation Alert Box -->
+          <div style="margin-top: 1.5rem; background-color: var(--bg-subtle-blue); border: 1px solid var(--primary-blue-light); border-radius: var(--radius-md); padding: 1rem; font-size: 0.85rem;">
+            <div style="font-weight: 700; color: var(--primary-blue); margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.4rem;">
+              <i class="fas fa-lightbulb"></i> AI Prescriptive Action:
+            </div>
+            <p id="pred-recommendation-text" style="color: var(--text-navy-light); margin: 0; line-height: 1.45;">
+              Moderate conditions anticipated. Maintain standard traffic monitoring and continuous sensor polling.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       6. INTERACTIVE POLLUTION MAP (STRICT LIGHT THEME)
+       ======================================================================== -->
+  <section class="section section-secondary" id="pollution-map">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge green"><i class="fas fa-map-location-dot"></i> Spatial Dispersion Map</div>
+        <h2 class="section-title">Metropolitan Pollution Geospatial Map</h2>
+        <p class="section-subtitle">Interactive geographical map overlaying real-time sensor node readings and particulate dispersion plumes.</p>
+      </div>
+
+      <div class="map-card-wrapper">
+        <div class="map-toolbar">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span style="font-weight: 700; color: var(--text-navy); font-size: 0.95rem;">
+              <i class="fas fa-layer-group" style="color: var(--primary-blue);"></i> Active Plume Layer:
+            </span>
+            <div class="map-layer-toggles">
+              <button class="map-layer-btn active" data-layer="aqi">Overall AQI</button>
+              <button class="map-layer-btn" data-layer="pm25">PM2.5 Plume</button>
+              <button class="map-layer-btn" data-layer="no2">NO₂ Dispersion</button>
+              <button class="map-layer-btn" data-layer="co2">CO₂ Density</button>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8125rem; color: var(--text-secondary);">
+            <i class="fas fa-circle-info"></i> Click any station node for detailed metrics
+          </div>
+        </div>
+
+        <!-- Leaflet Map Container -->
+        <div class="map-container" id="leafletPollutionMap"></div>
+
+        <!-- Map Legend -->
+        <div class="map-legend-box">
+          <div class="map-legend-title">Air Quality Scale</div>
+          <div class="map-legend-items">
+            <div class="map-legend-item"><span class="legend-dot good"></span> 0 - 50 (Good)</div>
+            <div class="map-legend-item"><span class="legend-dot moderate"></span> 51 - 100 (Moderate)</div>
+            <div class="map-legend-item"><span class="legend-dot unhealthy"></span> 101 - 150 (Sensitive)</div>
+            <div class="map-legend-item"><span class="legend-dot hazardous"></span> 151+ (Unhealthy)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       7. ANALYTICS & HISTORICAL INSIGHTS (STRICT LIGHT THEME)
+       ======================================================================== -->
+  <section class="section section-dashboard" id="analytics">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge"><i class="fas fa-chart-pie"></i> Long-Term Intelligence</div>
+        <h2 class="section-title">Pollution Analytics & Trend Analysis</h2>
+        <p class="section-subtitle">Multi-pollutant correlation models, 24-hour diurnal curves, and automated machine learning anomaly detections.</p>
+      </div>
+
+      <div class="analytics-grid">
+        <!-- 24h Multi-Pollutant Trend -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div>
+              <h3 class="chart-card-title">24-Hour Diurnal Pollution Curve</h3>
+              <p class="chart-card-subtitle">Hourly correlation between AQI, PM2.5, PM10 & NO₂</p>
+            </div>
+            <span class="badge badge-blue">Hourly Res</span>
+          </div>
+          <div class="chart-canvas-wrapper">
+            <canvas id="history24hChart"></canvas>
+          </div>
+        </div>
+
+        <!-- 7-Day Comparison Bar Chart -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div>
+              <h3 class="chart-card-title">7-Day Weekly Comparison</h3>
+              <p class="chart-card-subtitle">Comparative pollutant averages across the week</p>
+            </div>
+            <button class="btn btn-outline btn-sm" id="btn-export-csv">
+              <i class="fas fa-download"></i> Export CSV
+            </button>
+          </div>
+          <div class="chart-canvas-wrapper">
+            <canvas id="comparison7DayChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Anomaly Detection Table -->
+      <div class="anomaly-log-card">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+          <div>
+            <h3 style="font-size: 1.15rem; color: var(--text-navy);"><i class="fas fa-radar" style="color: #F97316;"></i> ML Anomaly Detection Log</h3>
+            <p style="font-size: 0.8125rem; color: var(--text-secondary);">Real-time alerts flagged by unsupervised Isolation Forest algorithms</p>
+          </div>
+          <span class="badge badge-purple">Isolation Forest 99.4% Precision</span>
+        </div>
+
+        <div class="anomaly-table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Monitoring Station</th>
+                <th>Spike Parameter</th>
+                <th>Confidence Algorithm</th>
+                <th>Resolution Status</th>
+              </tr>
+            </thead>
+            <tbody id="anomaly-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       8. SMART ALERTS & NOTIFICATIONS (STRICT LIGHT THEME ONLY)
+       ======================================================================== -->
+  <section class="section" id="alerts">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge" style="background-color: var(--alert-warning-bg); color: var(--alert-warning-text); border-color: var(--alert-warning-border);">
+          <i class="fas fa-bell"></i> Environmental Advisory Center
+        </div>
+        <h2 class="section-title">Real-Time Pollution Alerts</h2>
+        <p class="section-subtitle">Automated severity classification notifications designed with clear, high-contrast light-themed alert cards.</p>
+      </div>
+
+      <div class="alerts-toolbar">
+        <div class="alert-filters">
+          <button class="alert-filter-btn active" data-severity="all">All Alerts</button>
+          <button class="alert-filter-btn" data-severity="critical">Critical</button>
+          <button class="alert-filter-btn" data-severity="high">High</button>
+          <button class="alert-filter-btn" data-severity="warning">Warning</button>
+          <button class="alert-filter-btn" data-severity="safe">Safe / Normal</button>
+        </div>
+
+        <div>
+          <button class="btn btn-outline btn-sm" onclick="window.dataSimulator.triggerSimulatedSpike()">
+            <i class="fas fa-plus-circle"></i> Test Sensor Event
+          </button>
+        </div>
+      </div>
+
+      <!-- Light Alert Cards Container -->
+      <div class="alerts-list" id="alerts-list-container"></div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       9. ABOUT & AI ARCHITECTURE (STRICT LIGHT THEME)
+       ======================================================================== -->
+  <section class="section section-secondary" id="about">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-badge"><i class="fas fa-cubes"></i> System Architecture</div>
+        <h2 class="section-title">How SmartPollution AI Operates</h2>
+        <p class="section-subtitle">End-to-end integration of edge IoT hardware, atmospheric neural forecasting, and municipal automated mitigation.</p>
+      </div>
+
+      <div class="pipeline-grid">
+        <div class="pipeline-card">
+          <span class="pipeline-step-badge">Step 1</span>
+          <div class="pipeline-icon"><i class="fas fa-microchip"></i></div>
+          <h4>IoT Edge Sensing</h4>
+          <p>Multi-spectral laser particulate counters and electrochemical sensors capture PM2.5, PM10, CO₂, NO₂, and O₃ every 3 seconds.</p>
+        </div>
+
+        <div class="pipeline-card">
+          <span class="pipeline-step-badge">Step 2</span>
+          <div class="pipeline-icon" style="background-color: var(--bg-subtle-green); color: var(--secondary-green);"><i class="fas fa-filter"></i></div>
+          <h4>Telemetry Ingestion</h4>
+          <p>Data streams undergo automated outlier filtering, Kalman smoothing, and temperature-humidity baseline recalibration.</p>
+        </div>
+
+        <div class="pipeline-card">
+          <span class="pipeline-step-badge">Step 3</span>
+          <div class="pipeline-icon" style="background-color: var(--bg-subtle-purple); color: var(--accent-purple);"><i class="fas fa-brain"></i></div>
+          <h4>Bi-LSTM Neural Engine</h4>
+          <p>Recurrent deep learning models analyze meteorological winds, traffic influx, and historical cycles to forecast future AQI spikes.</p>
+        </div>
+
+        <div class="pipeline-card">
+          <span class="pipeline-step-badge">Step 4</span>
+          <div class="pipeline-icon" style="background-color: var(--alert-warning-bg); color: var(--alert-warning-text);"><i class="fas fa-bullhorn"></i></div>
+          <h4>Actionable Response</h4>
+          <p>Instant dispatch of smart traffic signal adjustments, industrial particulate misting cannons, and public citizen health advisories.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       10. FOOTER (STRICT LIGHT THEME)
+       ======================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="navbar-logo">
+            <div class="navbar-logo-icon"><i class="fas fa-leaf"></i></div>
+            <div>SmartPollution <span>AI</span></div>
+          </div>
+          <p>An enterprise-grade smart city environmental monitoring platform integrating edge IoT telemetry with deep learning forecasting.</p>
+          <div style="display: flex; gap: 0.75rem; margin-top: 1.25rem;">
+            <a href="#" class="btn btn-outline btn-icon-only" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="btn btn-outline btn-icon-only" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="#" class="btn btn-outline btn-icon-only" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Platform Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="#home">Home Overview</a></li>
+            <li><a href="#live-monitoring">Live Sensor Dashboard</a></li>
+            <li><a href="#ai-prediction">AI Predictor Engine</a></li>
+            <li><a href="#pollution-map">Geospatial Map</a></li>
+            <li><a href="#analytics">Trend Analytics</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Environmental Standards</h4>
+          <ul class="footer-links">
+            <li><a href="#">WHO Air Quality Guidelines</a></li>
+            <li><a href="#">US-EPA AQI Standards</a></li>
+            <li><a href="#">Particulate PM2.5 Thresholds</a></li>
+            <li><a href="#">Smart City API Documentation</a></li>
+            <li><a href="#">Model Architecture Whitepaper</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Stay Informed</h4>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Receive daily municipal air quality reports and critical threshold alerts.</p>
+          <form class="footer-newsletter-form" id="newsletter-form">
+            <input type="email" placeholder="Enter your email" required class="form-control" style="font-size: 0.85rem; padding: 0.55rem 0.85rem;">
+            <button type="submit" class="btn btn-primary btn-sm">Subscribe</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; 2026 SmartPollution AI Platform. All rights reserved. Strict Light Theme Edition.
+        </div>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">API Status</a>
+          <a href="#">Security Audit</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       MODAL: FULL REPORT SUMMARY PREVIEW (LIGHT THEME)
+       ======================================================================== -->
+  <div class="modal-overlay" id="report-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title"><i class="fas fa-file-contract" style="color: var(--primary-blue);"></i> Daily Air Quality Report</div>
+        <button class="modal-close-btn btn-close-modal"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div style="background: var(--bg-secondary); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1rem; border: 1px solid var(--border-light);">
+          <div style="font-weight: 700; color: var(--text-navy); margin-bottom: 0.25rem;">Executive Summary (Metropolitan Zone)</div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">Overall Air Quality status remains in the <strong>Moderate</strong> tier (Mean AQI: 74). Peak particulate concentrations recorded at Industrial District 4 during morning freight operations.</p>
+        </div>
+
+        <h4 style="font-size: 0.95rem; color: var(--text-navy); margin-bottom: 0.5rem;">Station Overview</h4>
+        <div style="font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.5rem;">
+          <div style="display: flex; justify-content: space-between; padding: 0.5rem; border-bottom: 1px solid var(--border-subtle);">
+            <span>City Center (HQ)</span>
+            <span class="badge badge-moderate">78 AQI (Moderate)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 0.5rem; border-bottom: 1px solid var(--border-subtle);">
+            <span>Industrial District 4</span>
+            <span class="badge badge-high">132 AQI (Sensitive)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 0.5rem; border-bottom: 1px solid var(--border-subtle);">
+            <span>Tech Park North</span>
+            <span class="badge badge-good">42 AQI (Good)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 0.5rem; border-bottom: 1px solid var(--border-subtle);">
+            <span>Riverside Promenade</span>
+            <span class="badge badge-good">35 AQI (Good)</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline btn-sm btn-close-modal">Close</button>
+        <button class="btn btn-primary btn-sm" onclick="window.showToast('Full PDF Environmental Report generated and downloaded.', 'success')">
+          <i class="fas fa-download"></i> Download PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ========================================================================
+       SCRIPTS: LEAFLET, CHART.JS & APPLICATION MODULES
+       ======================================================================== -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  
+  <script src="js/data-simulator.js"></script>
+  <script src="js/ai-engine.js"></script>
+  <script src="js/charts-module.js"></script>
+  <script src="js/map-module.js"></script>
+  <script src="js/alerts-module.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
